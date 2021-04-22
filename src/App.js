@@ -1,14 +1,22 @@
 import React, { Component, useState } from 'react'
 import './App.css';
 import cidades from "./cidades"
-import {} from "./setupGraphs"
-import Button from 'react-bootstrap/Button';
+import CardColor from "./cardColor"
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import { MDBBtn, MDBRow, MDBCol } from 'mdb-react-ui-kit';
+import getData from "./processData";
 
 
 function App() {
   const [cidadeEscolhida, setCidadeEscolhida] = useState("");
-
+  const [data, setData] = useState([]);
   // Put a loading option
+
+  const handleChange = (cidadeEscolhida) =>{
+    let newData = getData(cidadeEscolhida.toString())
+    setData(newData);
+    setCidadeEscolhida(cidadeEscolhida);
+  }
 
   let options = [];
   const defineOptions = () => {
@@ -29,22 +37,21 @@ function App() {
         </div>
 
         <div className="container">
-          <h5>Digite a cidade</h5>
-          <div class="container col-12">
+          <div className="container col-12">
             <h5>Escolha ou digite a cidade</h5>
-            <select class="btn" name="city">
+            <br></br>
+            <select className="btn" name="city">
               {
                 cidades.map((cidade) => {
-                  return <option value={cidade} onChange={() => { }}>{cidade}</option>
+                  return <option value={cidade} onChange={(e) => { handleChange(e.target.value.toString()) }}>{cidade}</option>
                 })
               }
             </select>
           </div>
-          <h5> Ou você pode </h5>
-
-          <h5>Escolher um estado </h5>
+          <br></br>
+          <h5>Ou você pode <br /> Escolher um estado </h5>
           <div className="container">
-            <select class="btn" name="state">
+            <select className="btn" name="state">
               <option value="AC">Acre</option>
               <option value="AL">Alagoas</option>
               <option value="AP">Amapá</option>
@@ -75,133 +82,33 @@ function App() {
             </select>
 
           </div>
-          <Button className="btn">Brasil</Button>
+          <br></br>
+
+          <MDBBtn rounded color='danger' >Brasil</MDBBtn>
         </div>
 
-        <div class="row secao-numeros">
-            <div class="col-md-6 coluna-casos">
-              <div class="card text-white bg-danger mb-3">
-                <div class="card-body">
-                  <h5 class="card-title"> Total de casos: </h5>
-                  <p id="casos" class="card-text text-white">0</p>
-                </div>
-              </div>
+              <br></br>
+        <MDBRow >
+          <MDBCol sm="12" md='6'>
+            <CardColor color="danger" className="cardInfo" title="Total de casos"  text="0" />
+
+            <CardColor color="danger"  className="cardInfo" title="Média móvel de casos"  text="0" />
+
+            <CardColor color="danger"  className="cardInfo" title="Variação da Média móvel"  text="0" />
+          </MDBCol>
 
 
-              <div class="card text-white" id="casos_da_ultima_semana" >
-                <div class="card-body">
-                  <h5 class="card-title"> Média móvel de casos: </h5>
-                  <p id="novos_casos" class="card-text text-white">0</p>
-                </div>
-              </div>
-       
-              <div  class="card text-white"  id="variacao_casos_estilo"  >
-                <div class="card-body">
-                  <h5 class="card-title">Variação da média móvel de casos: </h5>
-                  <p id="variacao_casos" class="card-text text-white">0</p>
-                </div>
-              </div>
-            </div>
+          <MDBCol md='6'>
+            <CardColor color="dark"  className="cardInfo" title="Total de mortes" text="0" />
 
-            <div class="col-md-6">
-              <div  class="card text-white bg-dark"  >
-                <div class="card-body">
-                  <h5 class="card-title">Total de mortos:</h5>
-                  <p id="mortes" class="card-text text-white">0</p>
-                </div>
-              </div>
+            <CardColor color="dark" className="cardInfo" title="Média móvel de mortes" text="0" />
 
-              <div  class="card text-white" id="mortes-da-ultima-semana" >
-                <div class="card-body">
-                  <h5 class="card-title"> Média móvel de mortes: </h5>
-                  <p id="novas_mortes" class="card-text text-white">0</p>
-                </div>
-              </div>
+            <CardColor color="dark"  className="cardInfo" title="Variação da Média móvel" text="0" />
+          </MDBCol>
+        </MDBRow>
 
-              <div  class="card text-white" id="variacao_mortes_estilo" >
-                <div class="card-body">
-                  <h5 class="card-title">Variação da média móvel de mortes: </h5>
-                  <p id="variacao_mortes" class="card-text text-white">0</p>
-                </div>
-              </div>
 
-            </div>
-          </div>
 
-        <div>
-        <div class="row"> 
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="TotalDeCasos"
-                  width="100%"
-                  height="100%"
-                 ></canvas>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="TotalDeMortes"
-                  width="100%"
-                  height="100%"
-                  ></canvas
-                >
-              </div>
-            </div>
-
-          </div>
-            <div class="row"> 
-
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="CasosDiarios"
-                  width="100%"
-                  height="100%"
-                 ></canvas
-                >
-
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="MortesDiarias"
-                  width="100%"
-                  height="100%"
-                 ></canvas
-                >
-              </div>
-            </div>
-
-          </div>
-          <div class="row"> 
-
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="MovelCasos"
-                  width="100%"
-                  height="100%"
-                ></canvas
-                >
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="card mb-4 shadow-sm">
-                <canvas
-                  id="MovelMortes"
-                  width="100%"
-                  height="100%"
-                 ></canvas
-                >
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
     </div>
   );
