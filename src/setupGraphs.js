@@ -1,21 +1,29 @@
-// import { Line }  from 'react-chartjs-2';
+import getData from "./processData";
+import ReactFusioncharts from "react-fusioncharts";
+import Brasil from "./Brasil.json"
+
+const plotGraph = () => {
+let data = Brasil.casosNovos;
 
 
-// const LineChart = () => (
 
-//   <>
-//     <div className='header'>
-//       <h1 className='title'>Line Chart</h1>
-//       <div className='links'>
-//         <a
-//           className='btn btn-gh'
-//           href='https://github.com/reactchartjs/react-chartjs-2/blob/react16/example/src/charts/Line.js'
-//         >
-//           Github Source
-//         </a>
-//       </div>
-//     </div>
-//     <Line data={data} options={options} />
-//   </>
-// );
 
+  const dataSource = {
+    chart: {
+      xaxisname: "Data",
+      yaxisname: "Casos",
+      theme: "candy"
+    },
+    data
+  }
+
+  return (
+  <ReactFusioncharts
+    type="column2d"
+    width="100%"
+    height="100%"
+    dataFormat="JSON"
+    dataSource={data}
+  />);
+}
+export default plotGraph;
