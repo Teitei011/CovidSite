@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState, useEffect} from 'react'
 import './App.css';
 import cidades from "./cidades"
 import CardColor from "./cardColor"
@@ -17,14 +17,27 @@ function App() {
   // Put a loading option
 
   const handleChange = (escolha) => {
-    console.log(escolha);
     setCidadeEscolhida(escolha);
+    let localidade = "../brazil/" + escolha + ".json";
+    document.title = escolha;
+    console.log(localidade)
+    fetch(localidade).then(function(response) {
+      response.json().then(function(data1) {
+        data1 = JSON.stringify(response.data1)
+        console.log(data1);
+        // setData(data1);
+      });
+    });
   }
 
   const searchOptions = (value) =>{
     let filterOption = cidades.filter(cidade => value === cidade);
     setSelecaoBuffer(filterOption);
   }
+
+  useEffect(() => {
+    document.title = "CoronaBrasil";
+  }, [])
 
 
   // const updateGraphs = (cidadeEscolhida);
@@ -39,10 +52,6 @@ function App() {
         </div>
 
         <div className="container">
-          <div className="container col-12">
-            <h5>Escolha ou digite a cidade</h5>
-            <br></br>
-
             <div class="container col-12">
               <h5>Escolha ou digite a cidade</h5>
 
@@ -58,7 +67,6 @@ function App() {
             </div>
 
 
-          </div>
           <br></br>
           <h5>Ou você pode <br /> Escolher um estado </h5>
           <div className="container">
@@ -98,7 +106,7 @@ function App() {
 
 
 
-        <plotGraph />;
+        <plotGraph />
 
       </main>
 
